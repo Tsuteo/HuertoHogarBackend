@@ -20,6 +20,10 @@ public class OrdenServicio {
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
 
+    public List<Orden> listarOrdenes() {
+        return ordenRepositorio.findAll();
+    }
+
     @Transactional
     public Orden crearOrden(Long usuarioId, List<SolicitudItem> items) {
         
@@ -36,7 +40,9 @@ public class OrdenServicio {
         List<DetalleOrden> detalles = new ArrayList<>();
 
         for (SolicitudItem item : items) {
-            Producto producto = productoRepositorio.findById(item.productoId)
+            Long idProducto = Long.parseLong(item.productoId);
+
+            Producto producto = productoRepositorio.findById(idProducto)
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + item.productoId));
 
             if (producto.getStock() < item.cantidad) {

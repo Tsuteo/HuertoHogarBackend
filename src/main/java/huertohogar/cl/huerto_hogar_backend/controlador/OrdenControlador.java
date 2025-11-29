@@ -17,6 +17,11 @@ public class OrdenControlador {
     @Autowired
     private OrdenServicio ordenServicio;
 
+    @GetMapping
+    public List<Orden> listarOrdenes() {
+        return ordenServicio.listarOrdenes();
+    }
+
     @PostMapping
     @SuppressWarnings("unchecked")
     public ResponseEntity<?> crearOrden(@RequestBody Map<String, Object> payload) {
@@ -26,7 +31,7 @@ public class OrdenControlador {
             List<Map<String, Object>> itemsMap = (List<Map<String, Object>>) payload.get("items");
             List<OrdenServicio.SolicitudItem> items = itemsMap.stream().map(i -> {
                 OrdenServicio.SolicitudItem item = new OrdenServicio.SolicitudItem();
-                item.productoId = (String) i.get("productoId");
+                item.productoId = i.get("productoId").toString();
                 item.cantidad = (Integer) i.get("cantidad");
                 return item;
             }).toList();
