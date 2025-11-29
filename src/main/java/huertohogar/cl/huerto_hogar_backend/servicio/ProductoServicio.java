@@ -9,19 +9,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductoServicio{
+public class ProductoServicio {
 
     @Autowired
     private ProductoRepositorio productoRepositorio;
 
+    
     public List<Producto> obtenerTodos() {
         return productoRepositorio.findAll();
     }
 
-    public Optional<Producto> obtenerPorId(Long id) {
+    
+    public Optional<Producto> obtenerPorId(String id) {
         return productoRepositorio.findById(id);
     }
 
+    
     public Producto guardarProducto(Producto producto) {
         if (producto.getPrecio() < 0) {
             throw new IllegalArgumentException("El precio no puede ser negativo");
@@ -29,7 +32,7 @@ public class ProductoServicio{
         return productoRepositorio.save(producto);
     }
 
-    public void eliminarProducto(Long id) {
+    public void eliminarProducto(String id) {
         productoRepositorio.deleteById(id);
     }
 }

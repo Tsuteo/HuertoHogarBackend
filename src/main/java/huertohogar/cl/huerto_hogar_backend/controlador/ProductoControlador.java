@@ -23,7 +23,7 @@ public class ProductoControlador {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> obtenerProducto(@PathVariable Long id) {
+    public ResponseEntity<Producto> obtenerProducto(@PathVariable String id) {
         Optional<Producto> producto = productoServicio.obtenerPorId(id);
         return producto.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -35,7 +35,7 @@ public class ProductoControlador {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> actualizarProducto(@PathVariable Long id, @RequestBody Producto detallesProducto) {
+    public ResponseEntity<Producto> actualizarProducto(@PathVariable String id, @RequestBody Producto detallesProducto) {
         Optional<Producto> productoOptional = productoServicio.obtenerPorId(id);
 
         if (productoOptional.isPresent()) {
@@ -45,6 +45,7 @@ public class ProductoControlador {
             productoExistente.setPrecio(detallesProducto.getPrecio());
             productoExistente.setStock(detallesProducto.getStock());
             productoExistente.setImagen(detallesProducto.getImagen());
+            productoExistente.setCategoria(detallesProducto.getCategoria());
 
             return ResponseEntity.ok(productoServicio.guardarProducto(productoExistente));
         } else {
@@ -53,7 +54,7 @@ public class ProductoControlador {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarProducto(@PathVariable String id) {
         Optional<Producto> producto = productoServicio.obtenerPorId(id);
         if (producto.isPresent()) {
             productoServicio.eliminarProducto(id);
