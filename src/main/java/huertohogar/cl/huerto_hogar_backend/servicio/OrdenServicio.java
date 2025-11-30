@@ -40,9 +40,7 @@ public class OrdenServicio {
         List<DetalleOrden> detalles = new ArrayList<>();
 
         for (SolicitudItem item : items) {
-            Long idProducto = Long.parseLong(item.productoId);
-
-            Producto producto = productoRepositorio.findById(idProducto)
+            Producto producto = productoRepositorio.findById(item.productoId)
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + item.productoId));
 
             if (producto.getStock() < item.cantidad) {
@@ -52,6 +50,7 @@ public class OrdenServicio {
             producto.setStock(producto.getStock() - item.cantidad);
             productoRepositorio.save(producto);
 
+            // Crear detalle
             DetalleOrden detalle = new DetalleOrden(orden, producto, item.cantidad, producto.getPrecio());
             detalles.add(detalle);
             

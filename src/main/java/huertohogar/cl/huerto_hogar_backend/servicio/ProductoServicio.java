@@ -24,6 +24,10 @@ public class ProductoServicio {
         return productoRepositorio.findById(id);
     }
 
+    public List<Producto> buscarPorCategoriaId(String prefijo) {
+        return productoRepositorio.findByIdStartingWith(prefijo);
+    }
+
     
     public Producto guardarProducto(Producto producto) {
         if (producto.getPrecio() < 0) {

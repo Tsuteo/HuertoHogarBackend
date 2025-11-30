@@ -22,6 +22,11 @@ public class ProductoControlador {
         return productoServicio.obtenerTodos();
     }
 
+    @GetMapping("/buscar")
+    public List<Producto> buscarPorPrefijo(@RequestParam String prefijo) {
+        return productoServicio.buscarPorCategoriaId(prefijo);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Producto> obtenerProducto(@PathVariable String id) {
         Optional<Producto> producto = productoServicio.obtenerPorId(id);
