@@ -5,28 +5,33 @@ import huertohogar.cl.huerto_hogar_backend.servicio.ProductoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/productos")
 @CrossOrigin(origins = "*")
+@Tag(name = "Gestión de Productos", description = "Catálogo de productos: Crear, Listar, Actualizar y Eliminar") 
 public class ProductoControlador {
 
     @Autowired
     private ProductoServicio productoServicio;
 
+    @Operation(summary = "Listar productos", description = "Devuelve el catálogo completo de productos disponibles")
     @GetMapping
     public List<Producto> listarProductos() {
         return productoServicio.obtenerTodos();
     }
 
+    @Operation(summary = "Buscar productos", description = "Filtra productos según el criterio especificado (prefijo/categoría)")
     @GetMapping("/buscar")
     public List<Producto> buscarPorPrefijo(@RequestParam String prefijo) {
         return productoServicio.buscarPorCategoriaId(prefijo);
     }
 
+    @Operation(summary = "Obtener por ID", description = "Busca el detalle de un producto específico")
     @GetMapping("/{id}")
     public ResponseEntity<Producto> obtenerProducto(@PathVariable String id) {
         Optional<Producto> producto = productoServicio.obtenerPorId(id);
@@ -34,11 +39,13 @@ public class ProductoControlador {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Crear producto", description = "Agrega un nuevo producto al inventario")
     @PostMapping
     public Producto crearProducto(@RequestBody Producto producto) {
         return productoServicio.guardarProducto(producto);
     }
 
+    @Operation(summary = "Actualizar producto", description = "Modifica los datos de un producto existente")
     @PutMapping("/{id}")
     public ResponseEntity<Producto> actualizarProducto(@PathVariable String id, @RequestBody Producto detallesProducto) {
         Optional<Producto> productoOptional = productoServicio.obtenerPorId(id);
@@ -58,6 +65,7 @@ public class ProductoControlador {
         }
     }
 
+    @Operation(summary = "Eliminar producto", description = "Elimina un producto del sistema")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable String id) {
         Optional<Producto> producto = productoServicio.obtenerPorId(id);

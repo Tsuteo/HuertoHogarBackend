@@ -6,17 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
+@Tag(name = "Autenticación", description = "Endpoints para registro y login de usuarios")
 public class AuthControlador {
 
     @Autowired
     private UsuarioServicio usuarioServicio;
 
+    @Operation(summary = "Registrar usuario", description = "Crea una nueva cuenta de cliente en el sistema")
     @PostMapping("/registro")
     public ResponseEntity<?> registrar(@RequestBody Usuario usuario) {
         try {
@@ -27,6 +31,7 @@ public class AuthControlador {
         }
     }
 
+    @Operation(summary = "Iniciar sesión", description = "Recibe email y password para validar credenciales") // <--- Descripción del botón
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
         String email = credenciales.get("email");
