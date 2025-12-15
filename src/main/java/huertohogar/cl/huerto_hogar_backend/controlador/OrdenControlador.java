@@ -12,7 +12,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ordenes")
-@CrossOrigin(origins = "*")
 @Tag(name = "Órdenes de Compra", description = "Procesamiento de ventas y gestión del carrito")
 public class OrdenControlador {
 
@@ -25,6 +24,7 @@ public class OrdenControlador {
         return ordenServicio.listarOrdenes();
     }
 
+    
     @Operation(summary = "Generar nueva orden", description = "Procesa el carrito de compras. Recibe 'usuarioId' y lista de 'items' (productoId, cantidad).")
     @PostMapping
     @SuppressWarnings("unchecked")

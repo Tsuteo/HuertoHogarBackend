@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "*")
 @Tag(name = "Gestión de Usuarios", description = "Administración de perfiles y roles de usuario")
 public class UsuarioControlador {
 

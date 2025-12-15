@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/blogs")
-@CrossOrigin(origins = "*")
 @Tag(name = "Blog", description = "Gestión de noticias y consejos del Huerto")
 public class BlogControlador {
 

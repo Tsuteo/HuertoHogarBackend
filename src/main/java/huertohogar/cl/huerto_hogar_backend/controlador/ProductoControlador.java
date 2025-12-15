@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/productos")
-@CrossOrigin(origins = "*")
 @Tag(name = "Gestión de Productos", description = "Catálogo de productos: Crear, Listar, Actualizar y Eliminar") 
 public class ProductoControlador {
 

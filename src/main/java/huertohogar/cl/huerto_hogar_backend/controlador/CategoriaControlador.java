@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/categorias")
-@CrossOrigin(origins = "*")
 @Tag(name = "Categorías", description = "Gestión de categorías y clasificación de productos") 
 public class CategoriaControlador {
 
