@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/api/contactos")
+@RequestMapping("/contactos")
 @Tag(name = "Contacto", description = "Buzón de mensajes y solicitudes de clientes")
 public class ContactoControlador {
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/categorias")
+@RequestMapping("/categorias")
 @Tag(name = "Categorías", description = "Gestión de categorías y clasificación de productos") 
 public class CategoriaControlador {
 

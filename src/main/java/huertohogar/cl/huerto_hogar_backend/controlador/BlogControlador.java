@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/blogs")
+@RequestMapping("/blogs")
 @Tag(name = "Blog", description = "Gestión de noticias y consejos del Huerto")
 public class BlogControlador {
 

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/ordenes")
+@RequestMapping("/ordenes")
 public class OrdenControlador {
 
     @Autowired

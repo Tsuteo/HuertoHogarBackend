@@ -35,30 +35,29 @@ public class SecurityConfig {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/blogs/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/contactos").permitAll()
-                .requestMatchers("/images/**", "/uploads/**").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+        
+            .requestMatchers("/auth/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/blogs/**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/contactos").permitAll()
+            .requestMatchers("/images/**", "/uploads/**").permitAll()
 
-                .requestMatchers(HttpMethod.POST, "/ordenes").authenticated()
-                .requestMatchers("/ordenes/usuario/**").authenticated()
+            .requestMatchers(HttpMethod.POST, "/ordenes").authenticated()
+            .requestMatchers("/ordenes/usuario/**").authenticated()
 
-                .requestMatchers(HttpMethod.PATCH, "/ordenes/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/contactos/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
-                .requestMatchers("/usuarios/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
-                
-                .requestMatchers(HttpMethod.GET, "/ordenes/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN") 
-                .requestMatchers("/productos/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
-                .requestMatchers("/categorias/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
-                .requestMatchers("/blogs/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
+            .requestMatchers(HttpMethod.PATCH, "/ordenes/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
+            .requestMatchers(HttpMethod.GET, "/contactos/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
+            .requestMatchers("/usuarios/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
 
-                .anyRequest().authenticated()
-            );
+            .requestMatchers("/productos/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
+            .requestMatchers("/categorias/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
+            .requestMatchers("/blogs/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
+        
+        .anyRequest().authenticated()
+        );
 
         http.addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class);
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/productos")
 @Tag(name = "Gestión de Productos", description = "Catálogo de productos: Crear, Listar, Actualizar y Eliminar") 
 public class ProductoControlador {
 

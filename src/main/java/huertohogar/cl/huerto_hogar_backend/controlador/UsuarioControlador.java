@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/usuarios")
 @Tag(name = "Gestión de Usuarios", description = "Administración de perfiles y roles de usuario")
 public class UsuarioControlador {
 
