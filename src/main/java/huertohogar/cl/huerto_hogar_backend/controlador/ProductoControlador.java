@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,13 +41,13 @@ public class ProductoControlador {
 
     @Operation(summary = "Crear producto", description = "Agrega un nuevo producto al inventario")
     @PostMapping
-    public Producto crearProducto(@RequestBody Producto producto) {
+    public Producto crearProducto(@Valid @RequestBody Producto producto) {
         return productoServicio.guardarProducto(producto);
     }
 
     @Operation(summary = "Actualizar producto", description = "Modifica los datos de un producto existente")
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> actualizarProducto(@PathVariable String id, @RequestBody Producto detallesProducto) {
+    public ResponseEntity<Producto> actualizarProducto(@PathVariable String id, @Valid @RequestBody Producto detallesProducto) { // Agregado @Valid
         Optional<Producto> productoOptional = productoServicio.obtenerPorId(id);
 
         if (productoOptional.isPresent()) {
@@ -57,6 +58,7 @@ public class ProductoControlador {
             productoExistente.setStock(detallesProducto.getStock());
             productoExistente.setImagen(detallesProducto.getImagen());
             productoExistente.setCategoria(detallesProducto.getCategoria());
+            productoExistente.setUnidadMedida(detallesProducto.getUnidadMedida());
 
             return ResponseEntity.ok(productoServicio.guardarProducto(productoExistente));
         } else {

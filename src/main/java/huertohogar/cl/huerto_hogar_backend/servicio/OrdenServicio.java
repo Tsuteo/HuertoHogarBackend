@@ -24,6 +24,13 @@ public class OrdenServicio {
         return ordenRepositorio.findAll();
     }
 
+    public List<Orden> listarOrdenesPorUsuario(Long usuarioId) {
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                
+        return ordenRepositorio.findByUsuario(usuario);
+    }
+
     @Transactional
     public Orden crearOrden(Long usuarioId, List<SolicitudItem> items) {
         
@@ -43,28 +50,42 @@ public class OrdenServicio {
             Producto producto = productoRepositorio.findById(item.productoId)
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + item.productoId));
 
+            if (item.cantidad <= 0) {
+                throw new RuntimeException("La cantidad debe ser mayor a 0 para: " + producto.getNombre());
+            }
+
             if (producto.getStock() < item.cantidad) {
-                throw new RuntimeException("Stock insuficiente para: " + producto.getNombre());
+                throw new RuntimeException("Stock insuficiente para: " + producto.getNombre() + ". Quedan: " + producto.getStock());
             }
 
             producto.setStock(producto.getStock() - item.cantidad);
             productoRepositorio.save(producto);
 
-            // Crear detalle
             DetalleOrden detalle = new DetalleOrden(orden, producto, item.cantidad, producto.getPrecio());
             detalles.add(detalle);
             
-            totalOrden += (producto.getPrecio() * item.cantidad);
+            int subtotalItem = (int) Math.round(producto.getPrecio() * item.cantidad);
+            totalOrden += subtotalItem;
         }
 
         orden.setDetalles(detalles);
         orden.setTotal(totalOrden);
+        orden.setEstado("PENDIENTE");
 
+        return ordenRepositorio.save(orden);
+    }
+
+    @Transactional
+    public Orden actualizarEstadoOrden(Long ordenId, String nuevoEstado) {
+        Orden orden = ordenRepositorio.findById(ordenId)
+                .orElseThrow(() -> new RuntimeException("Orden no encontrada con ID: " + ordenId));
+        orden.setEstado(nuevoEstado.toUpperCase());
+        
         return ordenRepositorio.save(orden);
     }
 
     public static class SolicitudItem {
         public String productoId;
-        public int cantidad;
+        public Double cantidad;
     }
 }

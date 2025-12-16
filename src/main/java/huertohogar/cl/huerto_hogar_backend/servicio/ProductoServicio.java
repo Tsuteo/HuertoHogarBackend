@@ -14,12 +14,10 @@ public class ProductoServicio {
     @Autowired
     private ProductoRepositorio productoRepositorio;
 
-    
     public List<Producto> obtenerTodos() {
         return productoRepositorio.findAll();
     }
 
-    
     public Optional<Producto> obtenerPorId(String id) {
         return productoRepositorio.findById(id);
     }
@@ -28,11 +26,15 @@ public class ProductoServicio {
         return productoRepositorio.findByIdStartingWith(prefijo);
     }
 
-    
     public Producto guardarProducto(Producto producto) {
-        if (producto.getPrecio() < 0) {
+        if (producto.getPrecio() != null && producto.getPrecio() < 0) {
             throw new IllegalArgumentException("El precio no puede ser negativo");
         }
+
+        if (producto.getStock() != null && producto.getStock() < 0) {
+            throw new IllegalArgumentException("El stock no puede ser negativo");
+        }
+
         return productoRepositorio.save(producto);
     }
 

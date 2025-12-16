@@ -14,8 +14,12 @@ public class Orden {
 
     @Column(nullable = false, unique = true)
     private String codigoBoleta;
+    
     private LocalDateTime fecha;
     private Integer total;
+
+    @Column(length = 20)
+    private String estado;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -26,9 +30,8 @@ public class Orden {
 
     public Orden() {
         this.fecha = LocalDateTime.now();
+        this.estado = "PENDIENTE";
     }
-
-
 
     public Long getId() {
         return id;
@@ -60,6 +63,14 @@ public class Orden {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Usuario getUsuario() {

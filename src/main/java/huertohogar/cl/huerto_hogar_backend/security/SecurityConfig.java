@@ -31,38 +31,36 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
-                .authorizeHttpRequests(auth -> auth
+    .authorizeHttpRequests(auth -> auth
 
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categorias/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/blogs/**").permitAll()
-                
                 .requestMatchers(HttpMethod.POST, "/api/contactos").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/contactos/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/api/ordenes").authenticated()
+                .requestMatchers("/api/ordenes/usuario/**").authenticated()
 
+                .requestMatchers(HttpMethod.PATCH, "/api/ordenes/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/contactos/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
                 .requestMatchers("/api/usuarios/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/ordenes/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
                 
+                .requestMatchers(HttpMethod.GET, "/api/ordenes/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN") 
                 .requestMatchers("/api/productos/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
                 .requestMatchers("/api/categorias/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
                 .requestMatchers("/api/blogs/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
 
                 .anyRequest().authenticated()
-            )
-            
-            .addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class);
-            
+            );
+
+        http.addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -70,9 +68,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:5173",
+            "http://localhost:3000",
+            "http://3.16.215.211:5173"
+        ));
         
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
         configuration.setAllowCredentials(true);
         
