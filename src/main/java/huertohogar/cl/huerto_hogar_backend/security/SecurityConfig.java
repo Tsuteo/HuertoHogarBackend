@@ -34,16 +34,20 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
+
+
             .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-        
+
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/blogs/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/contactos").permitAll()
             .requestMatchers("/images/**", "/uploads/**").permitAll()
+            
+            
 
             .requestMatchers(HttpMethod.POST, "/ordenes").authenticated()
             .requestMatchers("/ordenes/usuario/**").authenticated()
@@ -56,7 +60,7 @@ public class SecurityConfig {
             .requestMatchers("/categorias/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
             .requestMatchers("/blogs/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
         
-        .anyRequest().authenticated()
+                .anyRequest().authenticated()
         );
 
         http.addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class);
