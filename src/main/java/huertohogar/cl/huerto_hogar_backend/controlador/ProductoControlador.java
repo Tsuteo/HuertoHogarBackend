@@ -25,6 +25,12 @@ public class ProductoControlador {
         return productoServicio.obtenerTodos();
     }
 
+    @Operation(summary = "Listar productos destacados", description = "Devuelve el catálogo completo (Endpoint para destacados)")
+    @GetMapping("/destacados")
+    public List<Producto> listarDestacados() {
+        return productoServicio.obtenerTodos();
+    }
+
     @Operation(summary = "Buscar productos", description = "Filtra productos según el criterio especificado (prefijo/categoría)")
     @GetMapping("/buscar")
     public List<Producto> buscarPorPrefijo(@RequestParam String prefijo) {
